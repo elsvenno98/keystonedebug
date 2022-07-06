@@ -14,6 +14,7 @@ import { lists } from './schema';
 // Keystone auth is configured separately - check out the basic auth setup we are importing from our auth file.
 import { withAuth, session } from './auth';
 
+//TODO: Delete this comment when pipelines are working correctly
 //Small test comment to hopefully trigger pipeline
 
 export default withAuth(
