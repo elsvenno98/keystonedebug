@@ -14,6 +14,8 @@ import { lists } from './schema';
 // Keystone auth is configured separately - check out the basic auth setup we are importing from our auth file.
 import { withAuth, session } from './auth';
 
+//Small test comment to hopefully trigger pipeline
+
 export default withAuth(
   // Using the config function helps typescript guide you to the available options.
   config({
