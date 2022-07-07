@@ -3,6 +3,8 @@ kind: Service
 metadata:
   namespace: moovd-api
   name: moovd-psycho-educatie-cms-service
+imagePullSecrets:
+  - name: registry-credentials
 spec:
   externalTrafficPolicy: Cluster
   ports:
