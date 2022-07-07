@@ -42,7 +42,13 @@ docker-build:
 
 docker-deploy:
   stage: deploy
+  image:
+      name: bitnami/kubectl:latest
+      entrypoint: ['']
   script:
-    - echo "Hier moet iets gedeployed worden"
+    - echo "starting deployment"
+    - kubectl config get-contexts
+    - kubectl config use-context path/to/agent/repository:agent-name
+    - kubectl get pods
   rules:
     - if: '$CI_COMMIT_BRANCH == "development"'
