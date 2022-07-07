@@ -40,7 +40,7 @@ spec:
           terminationMessagePolicy: File
       dnsPolicy: ClusterFirst
       imagePullSecrets:
-        - name: regcred
+        - name: registry-credentials
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}

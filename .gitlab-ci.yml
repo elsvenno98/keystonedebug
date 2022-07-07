@@ -51,7 +51,7 @@ docker-deploy:
     - kubectl config use-context moovd-intern/products/psycho-education/psycho-education-cms:qa
     - kubectl get namespace
     - echo "Create secret"
-    - kubectl create secret docker-registry regcred --docker-server=registry.gitlab.com --docker-username=k8s --docker-password=<token>
+    - kubectl apply -f keystone/registry-credentials.yml
     - kubectl apply -f keystone/deployment-qa.yaml
   rules:
     - if: '$CI_COMMIT_BRANCH == "development"'
