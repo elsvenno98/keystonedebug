@@ -12,8 +12,6 @@ spec:
   selector:
     app: moovd-psycho-educatie-cms
   type: NodePort
-  imagePullSecrets:
-    - name: registry-credentials
 ---
 apiVersion: apps/v1
 kind: Deployment
