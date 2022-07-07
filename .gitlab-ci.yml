@@ -48,7 +48,7 @@ docker-deploy:
   script:
     - echo "starting deployment"
     - kubectl config get-contexts
-    - kubectl config use-context path/to/agent/repository:agent-name
+    - kubectl config use-context moovd-intern/products/psycho-education/psycho-education-cms:qa
     - kubectl get pods
   rules:
     - if: '$CI_COMMIT_BRANCH == "development"'
