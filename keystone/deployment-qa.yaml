@@ -34,6 +34,7 @@ spec:
       containers:
         - name: moovd-psycho-educatie-cms-qa
           image: registry.gitlab.com/moovd-intern/products/psycho-education/psycho-education-cms:development
+          imagePullPolicy: Always
           resources: {}
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
