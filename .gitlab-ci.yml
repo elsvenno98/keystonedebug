@@ -36,9 +36,9 @@ docker-build:
     - echo "test"
   # Run this job in a branch where a Dockerfile exists
   rules:
-    - if: $CI_COMMIT_BRANCH
-      exists:
-        - keystone/Dockerfile
+    - if: $CI_COMMIT_BRANCH != "development"
+#      exists:
+#        - keystone/Dockerfile
 
 docker-deploy:
   stage: deploy
@@ -49,6 +49,6 @@ docker-deploy:
     - echo "starting deployment"
     - kubectl config get-contexts
     - kubectl config use-context moovd-intern/products/psycho-education/psycho-education-cms:qa
-    - kubectl get pods
+    - kubectl get namespace
   rules:
     - if: '$CI_COMMIT_BRANCH == "development"'
