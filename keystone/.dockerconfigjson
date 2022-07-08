@@ -1,9 +1,6 @@
 {
     "auths": {
         "https://registry.gitlab.com":{
-            "username":"REGISTRY_USERNAME",
-            "password":"REGISTRY_PASSWORD",
-            "email":"REGISTRY_EMAIL",
             "auth":"S3ViZXJuZXRlcy1wdWxsZXI6U1ZHZVFhTkVnQkVuX01fb1NGTXk="
         }
     }
