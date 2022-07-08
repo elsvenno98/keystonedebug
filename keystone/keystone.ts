@@ -21,7 +21,7 @@ export default withAuth(
     // the db sets the database provider - we're using sqlite for the fastest startup experience
     db: {
       provider: 'postgresql',
-      url: "postgres://postgres-developemt-server-qa:R=eR'oe]>jk4`q'+@35.204.162.57:5432/cms-psycho-education",
+      url: "postgres://postgres-developemt-server-qa:R=eR'oe]>jk4`q'+@172.30.65.3:5432/cms-psycho-education",
       onConnect: async context => { /* ... */ },
       // Optional advanced configuration
       enableLogging: true,
