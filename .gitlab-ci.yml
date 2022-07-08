@@ -33,7 +33,6 @@ docker-build:
     - cd keystone
     - docker build --pull -t "$CI_REGISTRY_IMAGE${tag}" .
     - docker push "$CI_REGISTRY_IMAGE${tag}"
-    - docker push "gcr.io/moovd--ecosystem/$CI_REGISTRY_IMAGE${tag}"
     - echo "test"
   # Run this job in a branch where a Dockerfile exists
   rules:
