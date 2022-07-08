@@ -67,6 +67,6 @@ docker-deploy-production:
     # Change the context to the context of the project
     - kubectl config use-context moovd-intern/products/psycho-education/psycho-education-cms
     # Apply the deployment file for development
-    - kubectl apply -f keystone/deployment-production.yaml
+    - kubectl apply -f keystone/deployment-prod.yaml
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
