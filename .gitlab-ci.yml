@@ -43,18 +43,30 @@ docker-build:
       exists:
         - "*/Dockerfile"
 
-docker-deploy:
+# Deployment for the development environment
+docker-deploy-development:
   stage: deploy
   image:
       name: bitnami/kubectl:latest
       entrypoint: ['']
   script:
-    - echo "starting deployment"
-    - kubectl config get-contexts
+    # Change the context to the context of the project
     - kubectl config use-context moovd-intern/products/psycho-education/psycho-education-cms:qa
-    - kubectl get namespace
-    - echo "Create secret"
-    - kubectl apply -f keystone/registry-credentials.yml
+    # Apply the deployment file for development
     - kubectl apply -f keystone/deployment-qa.yaml
   rules:
     - if: '$CI_COMMIT_BRANCH == "development"'
+
+# Deployment for the production environment
+docker-deploy-production:
+  stage: deploy
+  image:
+    name: bitnami/kubectl:latest
+    entrypoint: ['']
+  script:
+    # Change the context to the context of the project
+    - kubectl config use-context moovd-intern/products/psycho-education/psycho-education-cms
+    # Apply the deployment file for development
+    - kubectl apply -f keystone/deployment-production.yaml
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
