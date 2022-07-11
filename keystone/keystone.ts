@@ -16,6 +16,9 @@ import { lists } from './schema';
 // Keystone auth is configured separately - check out the basic auth setup we are importing from our auth file.
 import { withAuth, session } from './auth';
 
+console.log('--------------');
+console.log('Connection string :' + process.env.CONNECTION_STRING);
+console.log('--------------');
 //TODO: Delete this when it works just for testing and changing some files
 export default withAuth(
   // Using the config function helps typescript guide you to the available options.
@@ -23,7 +26,7 @@ export default withAuth(
     // the db sets the database provider - we're using sqlite for the fastest startup experience
     db: {
       provider: 'postgresql',
-      url: process.env.ConnectionString! ,
+      url: process.env.CONNECTION_STRING!,
       onConnect: async context => { /* ... */ },
       // Optional advanced configuration
       enableLogging: true,
