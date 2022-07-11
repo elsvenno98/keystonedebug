@@ -14,7 +14,6 @@ stages:
   - deploy
 
 
-
 # Deployment for the development environment
 docker-deploy-development:
   stage: deploy
@@ -27,7 +26,7 @@ docker-deploy-development:
     # Apply the deployment file for development
     - kubectl apply -f keystone/deployment-qa.yaml -n moovd-api
     # Deploy again
-    - kubectl rollout restart deploy moovd-psycho-educatie-cms
+    - kubectl rollout restart deploy moovd-psycho-educatie-cms -n moovd-api
   rules:
     - if: '$CI_COMMIT_BRANCH == "development"'
 
