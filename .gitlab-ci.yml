@@ -13,3 +13,7 @@
 stages:
   - pre
 
+pre-build:
+  stage: pre
+  script:
+    - sh build.sh
