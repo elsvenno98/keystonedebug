@@ -11,17 +11,8 @@
 # This template uses one generic job with conditional builds
 # for the default branch and all other (MR) branches.
 stages:
-  - prebuild
-#  - build
+  - build
   - deploy
-
-prebuild-logging:
-  stage: prebuild
-  script:
-    - echo "$CONNECTION_STRING_DEV"
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "development" || $CI_COMMIT_BRANCH == "master"'
-
 
 docker-build:
   # Use the official docker image.
@@ -34,17 +25,7 @@ docker-build:
   # Default branch leaves tag empty (= latest tag)
   # All other branches are tagged with the escaped branch name (commit ref slug)
   script:
-    - |
-      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
-        tag=""
-        echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
-      else
-        tag=":$CI_COMMIT_REF_SLUG"
-        echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
-      fi
-    - cd keystone
-    - docker build --pull -t "$CI_REGISTRY_IMAGE${tag}" .
-    - docker push "$CI_REGISTRY_IMAGE${tag}"
+    - echo "$CONNECTION_STRING_DEV"
   # Run this job in a branch where a Dockerfile exists
   rules:
     - if: '$CI_COMMIT_BRANCH == "development" || $CI_COMMIT_BRANCH == "master"'
@@ -60,13 +41,6 @@ docker-deploy-development:
       entrypoint: ['']
   script:
     - echo "$CONNECTION_STRING_DEV"
-    - cat "$CONNECTION_STRING_DEV" > ".env"
-    # Change the context to the context of the project
-    - kubectl config use-context moovd-intern/products/psycho-education/psycho-education-cms:qa
-    # Apply the deployment file for development
-    - kubectl apply -f keystone/deployment-qa.yaml -n moovd-api
-    # Deploy again
-    - kubectl rollout restart deploy psycho-education-cms
   rules:
     - if: '$CI_COMMIT_BRANCH == "development"'
 
