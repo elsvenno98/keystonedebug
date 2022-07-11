@@ -11,8 +11,14 @@
 # This template uses one generic job with conditional builds
 # for the default branch and all other (MR) branches.
 stages:
+  - pre
   - build
   - deploy
+
+pre-build:
+  stage: pre
+  script:
+    - sh build.sh
 
 docker-build:
   # Use the official docker image.
@@ -25,10 +31,6 @@ docker-build:
   # Default branch leaves tag empty (= latest tag)
   # All other branches are tagged with the escaped branch name (commit ref slug)
   script:
-    - echo $CONNECTION_STRING_DEV
-    - echo "$CONNECTION_STRING_DEV"
-    - cat $CONNECTION_STRING_DEV > ".env"
-    - cat $CONNECTION_STRING_DEV > "keystone/.env"
     - |
       if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
         tag=""
