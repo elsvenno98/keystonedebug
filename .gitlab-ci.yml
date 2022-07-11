@@ -11,8 +11,17 @@
 # This template uses one generic job with conditional builds
 # for the default branch and all other (MR) branches.
 stages:
-  - build
+  - prebuild
+#  - build
   - deploy
+
+prebuild-logging:
+  stage: prebuild
+  script:
+    - echo "$CONNECTION_STRING_DEV"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "development" || $CI_COMMIT_BRANCH == "master"'
+
 
 docker-build:
   # Use the official docker image.
@@ -50,10 +59,14 @@ docker-deploy-development:
       name: bitnami/kubectl:latest
       entrypoint: ['']
   script:
+    - echo "$CONNECTION_STRING_DEV"
+    - cat "$CONNECTION_STRING_DEV" > ".env"
     # Change the context to the context of the project
     - kubectl config use-context moovd-intern/products/psycho-education/psycho-education-cms:qa
     # Apply the deployment file for development
     - kubectl apply -f keystone/deployment-qa.yaml -n moovd-api
+    # Deploy again
+    - kubectl rollout restart deploy psycho-education-cms
   rules:
     - if: '$CI_COMMIT_BRANCH == "development"'
 
