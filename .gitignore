@@ -481,3 +481,4 @@ fabric.properties
 
 keystone/dockerconfigjson
 keystone/registry-credentials.yml
+keystone/.env

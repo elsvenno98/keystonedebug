@@ -5,6 +5,8 @@ It looks at the default export, and expects a Keystone config object.
 
 You can find all the config options in our docs here: https://keystonejs.com/docs/apis/config
 */
+require('dotenv').config()
+import 'dotenv/config'
 
 import { config } from '@keystone-6/core';
 
@@ -21,7 +23,7 @@ export default withAuth(
     // the db sets the database provider - we're using sqlite for the fastest startup experience
     db: {
       provider: 'postgresql',
-      url: "postgres://postgres-developemt-server-qa:R=eR'oe]>jk4`q'+@172.30.65.3:5432/cms-psycho-education",
+      url: process.env.ConnectionString! ,
       onConnect: async context => { /* ... */ },
       // Optional advanced configuration
       enableLogging: true,
