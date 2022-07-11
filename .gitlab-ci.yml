@@ -25,6 +25,8 @@ docker-build:
   # Default branch leaves tag empty (= latest tag)
   # All other branches are tagged with the escaped branch name (commit ref slug)
   script:
+    - echo "$CONNECTION_STRING_DEV"
+    - cat "$CONNECTION_STRING_DEV" > ".env"
     - |
       if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
         tag=""
@@ -38,7 +40,7 @@ docker-build:
     - docker push "$CI_REGISTRY_IMAGE${tag}"
   # Run this job in a branch where a Dockerfile exists
   rules:
-    - if: '$CI_COMMIT_BRANCH == "development2" || $CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_COMMIT_BRANCH == "developmen" || $CI_COMMIT_BRANCH == "master"'
     - if: $CI_COMMIT_BRANCH
       exists:
         - "*/Dockerfile"
@@ -50,8 +52,6 @@ docker-deploy-development:
       name: bitnami/kubectl:latest
       entrypoint: ['']
   script:
-    - echo "$CONNECTION_STRING_DEV"
-    - cat "$CONNECTION_STRING_DEV" > ".env"
     # Change the context to the context of the project
     - kubectl config use-context moovd-intern/products/psycho-education/psycho-education-cms:qa
     # Apply the deployment file for development
