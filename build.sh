@@ -1,3 +1,5 @@
 #!/bin/bash
 
 echo $CONNECTION_STRING_DEV
+cat > test.env << EOF
+CONNECTION_STRING=$CONNECTION_STRING_DEV
