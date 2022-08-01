@@ -16,4 +16,4 @@ stages:
 pre-build:
   stage: pre
   script:
-    - sh build.sh
+    - echo $CONNECTION_STRING_DEV
