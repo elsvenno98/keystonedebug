@@ -17,4 +17,5 @@ pre-build:
   stage: pre
   script:
     - echo $CONNECTION_STRING_DEV
-    - echo $ECHO_TEST
+    - cat $CONNECTION_STRING_DEV > ".env" &&
+    - cat $CONNECTION_STRING_DEV > "keystone/.env"
