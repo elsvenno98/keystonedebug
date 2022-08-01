@@ -16,5 +16,4 @@ stages:
 pre-build:
   stage: pre
   script:
-    - echo $CONNECTION_STRING_DEV
-    - cat $CONNECTION_STRING_DEV > '*.env'
+    - sh build.sh
