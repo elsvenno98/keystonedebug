@@ -16,4 +16,4 @@ stages:
 pre-build:
   stage: pre
   script:
-    - echo $CONNECTION_STRING_DEV
+    - echo $DOT_ENV_DEV
