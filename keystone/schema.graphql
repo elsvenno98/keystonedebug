@@ -3,7 +3,6 @@
 
 type User {
   id: ID!
-  user_id: Int
   name: String
   last_name: String
   email: String
@@ -25,7 +24,6 @@ input UserWhereInput {
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
   id: IDFilter
-  user_id: IntNullableFilter
   name: StringFilter
   last_name: StringFilter
   email: StringFilter
@@ -41,17 +39,6 @@ input IDFilter {
   gt: ID
   gte: ID
   not: IDFilter
-}
-
-input IntNullableFilter {
-  equals: Int
-  in: [Int!]
-  notIn: [Int!]
-  lt: Int
-  lte: Int
-  gt: Int
-  gte: Int
-  not: IntNullableFilter
 }
 
 input StringFilter {
@@ -90,7 +77,6 @@ input NestedStringFilter {
 
 input UserOrderByInput {
   id: OrderDirection
-  user_id: OrderDirection
   name: OrderDirection
   last_name: OrderDirection
   email: OrderDirection
@@ -103,7 +89,6 @@ enum OrderDirection {
 }
 
 input UserUpdateInput {
-  user_id: Int
   name: String
   last_name: String
   email: String
@@ -117,7 +102,6 @@ input UserUpdateArgs {
 }
 
 input UserCreateInput {
-  user_id: Int
   name: String
   last_name: String
   email: String
@@ -127,11 +111,13 @@ input UserCreateInput {
 
 type MediaTable {
   id: ID!
-  media_id: Int
-  image: String
-  video: String
-  text: String
+  title: String
+  text: MediaTable_text_Document
   content: Content
+}
+
+type MediaTable_text_Document {
+  document(hydrateRelationships: Boolean! = false): JSON!
 }
 
 input MediaTableWhereUniqueInput {
@@ -143,26 +129,18 @@ input MediaTableWhereInput {
   OR: [MediaTableWhereInput!]
   NOT: [MediaTableWhereInput!]
   id: IDFilter
-  media_id: IntNullableFilter
-  image: StringFilter
-  video: StringFilter
-  text: StringFilter
+  title: StringFilter
   content: ContentWhereInput
 }
 
 input MediaTableOrderByInput {
   id: OrderDirection
-  media_id: OrderDirection
-  image: OrderDirection
-  video: OrderDirection
-  text: OrderDirection
+  title: OrderDirection
 }
 
 input MediaTableUpdateInput {
-  media_id: Int
-  image: String
-  video: String
-  text: String
+  title: String
+  text: JSON
   content: ContentRelateToOneForUpdateInput
 }
 
@@ -178,10 +156,8 @@ input MediaTableUpdateArgs {
 }
 
 input MediaTableCreateInput {
-  media_id: Int
-  image: String
-  video: String
-  text: String
+  title: String
+  text: JSON
   content: ContentRelateToOneForCreateInput
 }
 
@@ -190,9 +166,157 @@ input ContentRelateToOneForCreateInput {
   connect: ContentWhereUniqueInput
 }
 
+type Image {
+  id: ID!
+  name: String
+  image: ImageFieldOutput
+}
+
+type ImageFieldOutput {
+  id: ID!
+  filesize: Int!
+  width: Int!
+  height: Int!
+  extension: ImageExtension!
+  url: String!
+}
+
+enum ImageExtension {
+  jpg
+  png
+  webp
+  gif
+}
+
+input ImageWhereUniqueInput {
+  id: ID
+}
+
+input ImageWhereInput {
+  AND: [ImageWhereInput!]
+  OR: [ImageWhereInput!]
+  NOT: [ImageWhereInput!]
+  id: IDFilter
+  name: StringFilter
+}
+
+input ImageOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+}
+
+input ImageUpdateInput {
+  name: String
+  image: ImageFieldInput
+}
+
+input ImageFieldInput {
+  upload: Upload!
+}
+
+"""
+The `Upload` scalar type represents a file upload.
+"""
+scalar Upload
+
+input ImageUpdateArgs {
+  where: ImageWhereUniqueInput!
+  data: ImageUpdateInput!
+}
+
+input ImageCreateInput {
+  name: String
+  image: ImageFieldInput
+}
+
+type Video {
+  id: ID!
+  name: String
+  file: FileFieldOutput
+}
+
+type FileFieldOutput {
+  filename: String!
+  filesize: Int!
+  url: String!
+}
+
+input VideoWhereUniqueInput {
+  id: ID
+}
+
+input VideoWhereInput {
+  AND: [VideoWhereInput!]
+  OR: [VideoWhereInput!]
+  NOT: [VideoWhereInput!]
+  id: IDFilter
+  name: StringFilter
+}
+
+input VideoOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+}
+
+input VideoUpdateInput {
+  name: String
+  file: FileFieldInput
+}
+
+input FileFieldInput {
+  upload: Upload!
+}
+
+input VideoUpdateArgs {
+  where: VideoWhereUniqueInput!
+  data: VideoUpdateInput!
+}
+
+input VideoCreateInput {
+  name: String
+  file: FileFieldInput
+}
+
+type AudioFile {
+  id: ID!
+  name: String
+  file: FileFieldOutput
+}
+
+input AudioFileWhereUniqueInput {
+  id: ID
+}
+
+input AudioFileWhereInput {
+  AND: [AudioFileWhereInput!]
+  OR: [AudioFileWhereInput!]
+  NOT: [AudioFileWhereInput!]
+  id: IDFilter
+  name: StringFilter
+}
+
+input AudioFileOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+}
+
+input AudioFileUpdateInput {
+  name: String
+  file: FileFieldInput
+}
+
+input AudioFileUpdateArgs {
+  where: AudioFileWhereUniqueInput!
+  data: AudioFileUpdateInput!
+}
+
+input AudioFileCreateInput {
+  name: String
+  file: FileFieldInput
+}
+
 type Content {
   id: ID!
-  conten_id: Int
   name: String
   description: String
   media_id: MediaTable
@@ -208,7 +332,6 @@ input ContentWhereInput {
   OR: [ContentWhereInput!]
   NOT: [ContentWhereInput!]
   id: IDFilter
-  conten_id: IntNullableFilter
   name: StringFilter
   description: StringFilter
   media_id: MediaTableWhereInput
@@ -217,13 +340,11 @@ input ContentWhereInput {
 
 input ContentOrderByInput {
   id: OrderDirection
-  conten_id: OrderDirection
   name: OrderDirection
   description: OrderDirection
 }
 
 input ContentUpdateInput {
-  conten_id: Int
   name: String
   description: String
   media_id: MediaTableRelateToOneForUpdateInput
@@ -248,7 +369,6 @@ input ContentUpdateArgs {
 }
 
 input ContentCreateInput {
-  conten_id: Int
   name: String
   description: String
   media_id: MediaTableRelateToOneForCreateInput
@@ -267,7 +387,6 @@ input UserRelateToOneForCreateInput {
 
 type Question {
   id: ID!
-  question_id: Int
   description: String
 }
 
@@ -280,18 +399,15 @@ input QuestionWhereInput {
   OR: [QuestionWhereInput!]
   NOT: [QuestionWhereInput!]
   id: IDFilter
-  question_id: IntNullableFilter
   description: StringFilter
 }
 
 input QuestionOrderByInput {
   id: OrderDirection
-  question_id: OrderDirection
   description: OrderDirection
 }
 
 input QuestionUpdateInput {
-  question_id: Int
   description: String
 }
 
@@ -301,13 +417,11 @@ input QuestionUpdateArgs {
 }
 
 input QuestionCreateInput {
-  question_id: Int
   description: String
 }
 
 type Answer {
   id: ID!
-  answer_id: Int
   answer: Int
   question_id: Question
   user_id: User
@@ -322,20 +436,28 @@ input AnswerWhereInput {
   OR: [AnswerWhereInput!]
   NOT: [AnswerWhereInput!]
   id: IDFilter
-  answer_id: IntNullableFilter
   answer: IntNullableFilter
   question_id: QuestionWhereInput
   user_id: UserWhereInput
 }
 
+input IntNullableFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntNullableFilter
+}
+
 input AnswerOrderByInput {
   id: OrderDirection
-  answer_id: OrderDirection
   answer: OrderDirection
 }
 
 input AnswerUpdateInput {
-  answer_id: Int
   answer: Int
   question_id: QuestionRelateToOneForUpdateInput
   user_id: UserRelateToOneForUpdateInput
@@ -353,7 +475,6 @@ input AnswerUpdateArgs {
 }
 
 input AnswerCreateInput {
-  answer_id: Int
   answer: Int
   question_id: QuestionRelateToOneForCreateInput
   user_id: UserRelateToOneForCreateInput
@@ -366,7 +487,6 @@ input QuestionRelateToOneForCreateInput {
 
 type Assignment {
   id: ID!
-  assignment_id: Int
   title: String
   description: String
   user_id: User
@@ -381,7 +501,6 @@ input AssignmentWhereInput {
   OR: [AssignmentWhereInput!]
   NOT: [AssignmentWhereInput!]
   id: IDFilter
-  assignment_id: IntNullableFilter
   title: StringFilter
   description: StringFilter
   user_id: UserWhereInput
@@ -389,13 +508,11 @@ input AssignmentWhereInput {
 
 input AssignmentOrderByInput {
   id: OrderDirection
-  assignment_id: OrderDirection
   title: OrderDirection
   description: OrderDirection
 }
 
 input AssignmentUpdateInput {
-  assignment_id: Int
   title: String
   description: String
   user_id: UserRelateToOneForUpdateInput
@@ -407,7 +524,6 @@ input AssignmentUpdateArgs {
 }
 
 input AssignmentCreateInput {
-  assignment_id: Int
   title: String
   description: String
   user_id: UserRelateToOneForCreateInput
@@ -415,7 +531,6 @@ input AssignmentCreateInput {
 
 type Session {
   id: ID!
-  session_id: Int
   start_date: DateTime
   end_date: DateTime
   entry_code: Int
@@ -434,7 +549,6 @@ input SessionWhereInput {
   OR: [SessionWhereInput!]
   NOT: [SessionWhereInput!]
   id: IDFilter
-  session_id: IntNullableFilter
   start_date: DateTimeNullableFilter
   end_date: DateTimeNullableFilter
   entry_code: IntNullableFilter
@@ -454,14 +568,12 @@ input DateTimeNullableFilter {
 
 input SessionOrderByInput {
   id: OrderDirection
-  session_id: OrderDirection
   start_date: OrderDirection
   end_date: OrderDirection
   entry_code: OrderDirection
 }
 
 input SessionUpdateInput {
-  session_id: Int
   start_date: DateTime
   end_date: DateTime
   entry_code: Int
@@ -474,7 +586,6 @@ input SessionUpdateArgs {
 }
 
 input SessionCreateInput {
-  session_id: Int
   start_date: DateTime
   end_date: DateTime
   entry_code: Int
@@ -483,7 +594,6 @@ input SessionCreateInput {
 
 type Plan {
   id: ID!
-  plan_id: Int
   user_id: User
   session_id: Session
   assignment_id: Assignment
@@ -499,7 +609,6 @@ input PlanWhereInput {
   OR: [PlanWhereInput!]
   NOT: [PlanWhereInput!]
   id: IDFilter
-  plan_id: IntNullableFilter
   user_id: UserWhereInput
   session_id: SessionWhereInput
   assignment_id: AssignmentWhereInput
@@ -508,12 +617,10 @@ input PlanWhereInput {
 
 input PlanOrderByInput {
   id: OrderDirection
-  plan_id: OrderDirection
   note: OrderDirection
 }
 
 input PlanUpdateInput {
-  plan_id: Int
   user_id: UserRelateToOneForUpdateInput
   session_id: SessionRelateToOneForUpdateInput
   assignment_id: AssignmentRelateToOneForUpdateInput
@@ -538,7 +645,6 @@ input PlanUpdateArgs {
 }
 
 input PlanCreateInput {
-  plan_id: Int
   user_id: UserRelateToOneForCreateInput
   session_id: SessionRelateToOneForCreateInput
   assignment_id: AssignmentRelateToOneForCreateInput
@@ -579,6 +685,27 @@ type Mutation {
   updateMediaTables(data: [MediaTableUpdateArgs!]!): [MediaTable]
   deleteMediaTable(where: MediaTableWhereUniqueInput!): MediaTable
   deleteMediaTables(where: [MediaTableWhereUniqueInput!]!): [MediaTable]
+  createImage(data: ImageCreateInput!): Image
+  createImages(data: [ImageCreateInput!]!): [Image]
+  updateImage(where: ImageWhereUniqueInput!, data: ImageUpdateInput!): Image
+  updateImages(data: [ImageUpdateArgs!]!): [Image]
+  deleteImage(where: ImageWhereUniqueInput!): Image
+  deleteImages(where: [ImageWhereUniqueInput!]!): [Image]
+  createVideo(data: VideoCreateInput!): Video
+  createVideos(data: [VideoCreateInput!]!): [Video]
+  updateVideo(where: VideoWhereUniqueInput!, data: VideoUpdateInput!): Video
+  updateVideos(data: [VideoUpdateArgs!]!): [Video]
+  deleteVideo(where: VideoWhereUniqueInput!): Video
+  deleteVideos(where: [VideoWhereUniqueInput!]!): [Video]
+  createAudioFile(data: AudioFileCreateInput!): AudioFile
+  createAudioFiles(data: [AudioFileCreateInput!]!): [AudioFile]
+  updateAudioFile(
+    where: AudioFileWhereUniqueInput!
+    data: AudioFileUpdateInput!
+  ): AudioFile
+  updateAudioFiles(data: [AudioFileUpdateArgs!]!): [AudioFile]
+  deleteAudioFile(where: AudioFileWhereUniqueInput!): AudioFile
+  deleteAudioFiles(where: [AudioFileWhereUniqueInput!]!): [AudioFile]
   createContent(data: ContentCreateInput!): Content
   createContents(data: [ContentCreateInput!]!): [Content]
   updateContent(
@@ -673,6 +800,30 @@ type Query {
   ): [MediaTable!]
   mediaTable(where: MediaTableWhereUniqueInput!): MediaTable
   mediaTablesCount(where: MediaTableWhereInput! = {}): Int
+  images(
+    where: ImageWhereInput! = {}
+    orderBy: [ImageOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Image!]
+  image(where: ImageWhereUniqueInput!): Image
+  imagesCount(where: ImageWhereInput! = {}): Int
+  videos(
+    where: VideoWhereInput! = {}
+    orderBy: [VideoOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Video!]
+  video(where: VideoWhereUniqueInput!): Video
+  videosCount(where: VideoWhereInput! = {}): Int
+  audioFiles(
+    where: AudioFileWhereInput! = {}
+    orderBy: [AudioFileOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [AudioFile!]
+  audioFile(where: AudioFileWhereUniqueInput!): AudioFile
+  audioFilesCount(where: AudioFileWhereInput! = {}): Int
   contents(
     where: ContentWhereInput! = {}
     orderBy: [ContentOrderByInput!]! = []

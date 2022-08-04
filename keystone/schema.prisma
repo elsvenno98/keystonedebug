@@ -13,7 +13,6 @@ generator client {
 
 model User {
   id                      String       @id @default(cuid())
-  user_id                 Int?
   name                    String       @default("")
   last_name               String       @default("")
   email                   String       @unique @default("")
@@ -28,10 +27,8 @@ model User {
 
 model MediaTable {
   id                    String    @id @default(cuid())
-  media_id              Int?
-  image                 String    @default("")
-  video                 String    @default("")
-  text                  String    @default("")
+  title                 String    @default("")
+  text                  Json      @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
   content               Content?  @relation("MediaTable_content", fields: [contentId], references: [id])
   contentId             String?   @map("content")
   from_Content_media_id Content[] @relation("Content_media_id")
@@ -39,13 +36,36 @@ model MediaTable {
   @@index([contentId])
 }
 
+model Image {
+  id              String  @id @default(cuid())
+  name            String  @default("")
+  image_filesize  Int?
+  image_extension String?
+  image_width     Int?
+  image_height    Int?
+  image_id        String?
+}
+
+model Video {
+  id            String  @id @default(cuid())
+  name          String  @default("")
+  file_filesize Int?
+  file_filename String?
+}
+
+model AudioFile {
+  id            String  @id @default(cuid())
+  name          String  @default("")
+  file_filesize Int?
+  file_filename String?
+}
+
 model Content {
   id                      String       @id @default(cuid())
-  conten_id               Int?
   name                    String       @default("")
   description             String       @default("")
   media_id                MediaTable?  @relation("Content_media_id", fields: [media_idId], references: [id])
-  media_idId              String?      @map("media_id")
+  media_idId              String?      @map("text")
   user_id                 User?        @relation("Content_user_id", fields: [user_idId], references: [id])
   user_idId               String?      @map("user_id")
   from_MediaTable_content MediaTable[] @relation("MediaTable_content")
@@ -56,17 +76,15 @@ model Content {
 
 model Question {
   id                      String   @id @default(cuid())
-  question_id             Int?
   description             String   @default("")
   from_Answer_question_id Answer[] @relation("Answer_question_id")
 }
 
 model Answer {
   id            String    @id @default(cuid())
-  answer_id     Int?
   answer        Int?
   question_id   Question? @relation("Answer_question_id", fields: [question_idId], references: [id])
-  question_idId String?   @map("question_id")
+  question_idId String?   @map("description")
   user_id       User?     @relation("Answer_user_id", fields: [user_idId], references: [id])
   user_idId     String?   @map("user_id")
 
@@ -76,7 +94,6 @@ model Answer {
 
 model Assignment {
   id                      String  @id @default(cuid())
-  assignment_id           Int?
   title                   String  @default("")
   description             String  @default("")
   user_id                 User?   @relation("Assignment_user_id", fields: [user_idId], references: [id])
@@ -88,7 +105,6 @@ model Assignment {
 
 model Session {
   id                   String    @id @default(cuid())
-  session_id           Int?
   start_date           DateTime?
   end_date             DateTime?
   entry_code           Int?
@@ -101,13 +117,12 @@ model Session {
 
 model Plan {
   id              String      @id @default(cuid())
-  plan_id         Int?
   user_id         User?       @relation("Plan_user_id", fields: [user_idId], references: [id])
   user_idId       String?     @map("user_id")
   session_id      Session?    @relation("Plan_session_id", fields: [session_idId], references: [id])
-  session_idId    String?     @map("session_id")
+  session_idId    String?     @map("start_date")
   assignment_id   Assignment? @relation("Plan_assignment_id", fields: [assignment_idId], references: [id])
-  assignment_idId String?     @map("assignment_id")
+  assignment_idId String?     @map("title")
   note            String      @default("")
 
   @@index([user_idId])
