@@ -41,7 +41,7 @@ docker-deploy-development:
     entrypoint: ['']
   script:
     # Change the context to the context of the project
-    - kubectl config use-context moovd-intern/products/psycho-education/psycho-education-cms:qa
+    - kubectl config use-context moovd-intern/products/psycho-educatie/psycho-educatie-cms:qa
     # Apply the deployment file for development
     - kubectl apply -f keystone/deployment-qa.yaml -n moovd-api
     # Deploy again
@@ -57,7 +57,7 @@ docker-deploy-production:
     entrypoint: ['']
   script:
     # Change the context to the context of the project
-    - kubectl config use-context moovd-intern/products/psycho-education/psycho-education-cms
+    - kubectl config use-context moovd-intern/products/psycho-educatie/psycho-educatie-cms
     # Apply the deployment file for development
     - kubectl apply -f keystone/deployment-prod.yaml -n moovd-api
     # Deploy again

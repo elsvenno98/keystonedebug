@@ -55,7 +55,7 @@ export default withAuth(
                 serverRoute: {
                     path: '/videos'
                 },
-                storagePath: 'public/images',
+                storagePath: 'public/videos',
             },
             local_audio_files: {
                 kind: "local",
