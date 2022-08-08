@@ -25,15 +25,21 @@ model User {
   from_Plan_user_id       Plan[]       @relation("Plan_user_id")
 }
 
-model MediaTable {
-  id                    String    @id @default(cuid())
-  title                 String    @default("")
-  text                  Json      @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
-  content               Content?  @relation("MediaTable_content", fields: [contentId], references: [id])
-  contentId             String?   @map("content")
-  from_Content_media_id Content[] @relation("Content_media_id")
+model Course {
+  id    String @id @default(cuid())
+  title String @default("")
+  pages Page[] @relation("Page_course")
+}
 
-  @@index([contentId])
+model Page {
+  id       String  @id @default(cuid())
+  title    String  @default("")
+  order    Int?
+  text     Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  course   Course? @relation("Page_course", fields: [courseId], references: [id])
+  courseId String? @map("course")
+
+  @@index([courseId])
 }
 
 model Image {
@@ -61,16 +67,12 @@ model AudioFile {
 }
 
 model Content {
-  id                      String       @id @default(cuid())
-  name                    String       @default("")
-  description             String       @default("")
-  media_id                MediaTable?  @relation("Content_media_id", fields: [media_idId], references: [id])
-  media_idId              String?      @map("text")
-  user_id                 User?        @relation("Content_user_id", fields: [user_idId], references: [id])
-  user_idId               String?      @map("user_id")
-  from_MediaTable_content MediaTable[] @relation("MediaTable_content")
+  id          String  @id @default(cuid())
+  name        String  @default("")
+  description String  @default("")
+  user_id     User?   @relation("Content_user_id", fields: [user_idId], references: [id])
+  user_idId   String? @map("user_id")
 
-  @@index([media_idId])
   @@index([user_idId])
 }
 

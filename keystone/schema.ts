@@ -71,9 +71,18 @@ export const lists: Lists = {
             },
         },
     }),
-    MediaTable: list({
+    Course: list({
         fields: {
             title: text(),
+            pages: relationship({
+                ref: 'Page.course', many: true
+            }),
+        }
+    }),
+    Page: list({
+        fields: {
+            title: text(),
+            order: integer(),
             text: document({
                 formatting: true, dividers: true, links: true, relationships: {
                     image: {
@@ -93,8 +102,8 @@ export const lists: Lists = {
                     }
                 }
             }),
-            content: relationship({
-                ref: 'Content', many: false
+            course: relationship({
+                ref: 'Course.pages', many: false
             })
         },
         ui: {
@@ -126,14 +135,6 @@ export const lists: Lists = {
         fields: {
             name: text(),
             description: text(),
-            media_id: relationship({
-                ref: 'MediaTable',
-                db: {
-                    foreignKey: {
-                        map: 'text'
-                    }
-                }
-            }),
             user_id: relationship({
                 ref: 'User',
                 db: {
