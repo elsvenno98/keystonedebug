@@ -84,7 +84,18 @@ export const lists: Lists = {
             title: text(),
             order: integer(),
             text: document({
-                formatting: true, dividers: true, links: true, relationships: {
+                formatting: {
+                    inlineMarks: {
+                        bold: true,
+                        italic: true,
+                        underline: true
+                    },
+                    listTypes: {
+                        unordered: true
+                    },
+                    headingLevels: [2,4],
+                    softBreaks: true,
+                }, relationships: {
                     image: {
                         listKey: 'Image',
                         label: 'Image',
