@@ -38,6 +38,15 @@ spec:
           resources: {}
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
+          ports:
+          - containerPort: 3000
+            protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /signin
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 5
       dnsPolicy: ClusterFirst
       imagePullSecrets:
         - name: registry-credentials
