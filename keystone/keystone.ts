@@ -38,6 +38,9 @@ export default withAuth(
         },
         lists,
         session,
+        server: {
+            cors: {origin: '*', credentials: false, preflightContinue: false}
+        },
         storage: {
             local_images: {
                 kind: 'local',

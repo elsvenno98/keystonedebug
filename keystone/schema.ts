@@ -88,7 +88,7 @@ export const lists: Lists = {
                     image: {
                         listKey: 'Image',
                         label: 'Image',
-                        selection: 'id name'
+                        selection: 'id name image{url}'
                     },
                     video: {
                         listKey: 'Video',
